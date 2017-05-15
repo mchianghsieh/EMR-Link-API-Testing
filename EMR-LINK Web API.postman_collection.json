@@ -1,0 +1,1361 @@
+{
+	"variables": [],
+	"info": {
+		"name": "EMR-LINK Web API",
+		"_postman_id": "e25d9e15-0788-f352-5ea0-d2b0f5f9ced4",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Order - Test1 - Create/Update/Send",
+			"description": "",
+			"item": [
+				{
+					"name": "Step1: Create Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"EMRLinkOrderID\", data.Order.EMRLinkOrderID);\r",
+									"postman.setEnvironmentVariable(\"Pre_AltID\", data.Order.Patient.AltID);\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"StatusMsg\", data.Order.StatusMsg);\r",
+									"\r",
+									"var checkStatusMsg = postman.getEnvironmentVariable(\"StatusMsg\");\r",
+									"tests[\"Check Order Status - Should be Waiting to be sent\"] = checkStatusMsg === \"WAITING to be Sent\";"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var ts = new Date().getTime();\r",
+									"postman.setEnvironmentVariable(\"objectid\", \"acb\"+ts);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/create?allowTestAddition=false&requiredFieldCheck=NONE&sendImmediately=false",
+						"method": "POST",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"OrderID\": \"{{objectid}}\",\r\n  \"ServiceProviderName\": \"NuLab\",\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"VisitID\": \"\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"APITEST-001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Test\",\r\n    \"FirstName\": \"API\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03/05/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"01/27/1972\",\r\n    \"InsuredGender\": \"Male\"\r\n  },\r\n  \"SecondaryInsurance\": {\r\n    \"Name\": \"Consolidated Health Care\",\r\n    \"Plan\": \"CHC (Gold Plan)\",\r\n    \"GroupID\": \"343434\",\r\n    \"MemberID\": \"7890567\",\r\n    \"Address1\": \"1239 NW Brocker Ave.\",\r\n    \"Address2\": \"Ste 390\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"\",\r\n    \"InsuredState\": \"\",\r\n    \"InsuredZipCode\": \"\",\r\n    \"InsuredCountry\": \"\",\r\n    \"InsuredPhone\": \"\",\r\n    \"InsuredWorkPhone\": \"\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\"\r\n  },\r\n  \"Guarantor\": {\r\n    \"LastName\": \"Bob\",\r\n    \"FirstName\": \"Bigboy\",\r\n    \"MiddleName\": \"\",\r\n    \"Address1\": \"\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"\",\r\n    \"State\": \"\",\r\n    \"ZipCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"Phone\": \"\",\r\n    \"WorkPhone\": \"\",\r\n    \"Relationship\": \"other\",\r\n    \"DateOfBirth\": \"\"\r\n  },\r\n  \"OrderLevelAOEList\": [\r\n    {\r\n      \"CodedValue\": \"YES\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1\"\r\n    },\r\n    {\r\n      \"CodedValue\": \"41\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1DETAILS\"\r\n    }\r\n  ],\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"AOE Demo Samples\",\r\n      \"Code\": \"1000000\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"This is a sample test to demo AOEs\",\r\n      \"TestID\": \"6835bf8d96984bac892e8a4c88b0f5f7\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n\t\t  \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"07/13/2016\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_strict1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"last year\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_loose1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"Display-only text\",\r\n          \"AOEID\": \"aoe.OBX_default1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_plain1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_styled1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_text_nolimit1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"1234\",\r\n          \"AOEID\": \"aoe.OBX_text_limitto41000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"012345678901234567890123456789\",\r\n         \"AOEID\": \"aoe.OBX_textbox1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"R\",\r\n          \"AOEID\": \"aoe.OBX_select1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"G\",\r\n         \"AOEID\": \"aoe.OBX_selectwithdefault1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"purple\",\r\n          \"AOEID\": \"aoe.OBX_selectcombo1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"C\",\r\n          \"AOEID\": \"aoe.OBX_selectmaster1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selectorslave1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"y\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"asdf\",\r\n          \"AOEID\": \"aoe.OBX_text_vis1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selector_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice1_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice2_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice3_details1000000\"\r\n        }\r\n      ],\r\n      \"SpecimenAOEList\": [\r\n        {\r\n          \"CodedValue\": \"nose\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-2\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"nose notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-2\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        {\"Code10\":\"S93.409\"}\r\n      ]\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n      \"Code\": \"1000001\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"comments for AOE shared demo test\",\r\n      \"TestID\": \"5f18aa0c93bd4935a748bee986195184\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        \r\n      ]\r\n    }\r\n  ],\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ResponsibleProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"PrimaryCareProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ReferringProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"MedicationList\": [\r\n    {\r\n      \"Description\": \"LIPITOR 20 MG TABS\",\r\n      \"GenericDescription\": \"ATORVASTATIN CALCIUM\",\r\n      \"DDID\": \"47943\",\r\n      \"GPICode\": \"39400010100320\",\r\n      \"NCDCode\": \"\",\r\n      \"Instructions\": \"\",\r\n      \"OnsetDate\": \"07/03/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"1688467130006110\",\r\n      \"Comments\": \"\",\r\n      \"Indications\": \"\"\r\n    }\r\n  ],\r\n  \"ProblemList\": [\r\n    {\r\n      \"Description\": \"CHOLELITHIASIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-574.20\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"CHEST PAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-786.50\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"AORTIC STENOSIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-424.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ASTHMA, MILD\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-493.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANKLE SPRAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-845.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANXIETY\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-300.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERTENSION\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-401.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"07/13/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"OSTEOPENIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-733.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPOTHYROIDISM\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-244.9\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERLIPIDEMIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-272.4\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"DIABETES INSIPIDUS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-253.5\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"10/13/2009\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    }\r\n  ],\r\n  \"ObservationList\": [\r\n    \r\n  ],\r\n  \"AllergyList\": [\r\n    {\r\n      \"Name\": \"PENICILLIN (PENICILLIN V POTASSIUM)\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"CriticalIndicator\": \"C\",\r\n      \"Classification\": \"DRUG\",\r\n      \"Description\": \"\",\r\n      \"GPICode\": \"0110000000\",\r\n      \"Severity\": \"\"\r\n    }\r\n  ],\r\n  \"DirectiveList\": [\r\n    {\r\n      \"Description\": \"NO ARTIFICIAL LIFE SUPPORT\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\"\r\n    }\r\n  ]\r\n}\r\n"
+						},
+						"description": "Create an order. Requires an order to be included in the request body.\nChange the \"OrderID\" in the body JSON if an order already exists in EMR-Link with that orderID."
+					},
+					"response": []
+				},
+				{
+					"name": "Step2: Update Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"var org_altId = postman.getEnvironmentVariable(\"Pre_AltID\");",
+									"var new_altID = postman.getEnvironmentVariable(\"AltID_Update\");",
+									"",
+									"tests[\"Check update order by compare AltID \"] = new_altID!==org_altId;"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var rnd = Math.floor((Math.random() * 10000) + 1);\r",
+									"postman.setEnvironmentVariable(\"AltID_Update\", rnd);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/update?requiredFieldCheck=NONE&sendImmediately=false",
+						"method": "POST",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"EMRLinkOrderID\": \"{{EMRLinkOrderID}}\",\r\n  \"ServiceProviderName\": \"NuLab\",\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"VisitID\": \"\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"APITEST-001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"{{AltID_Update}}\",\r\n    \"LastName\": \"Test\",\r\n    \"FirstName\": \"API\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03/05/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"01/27/1972\",\r\n    \"InsuredGender\": \"Male\"\r\n  },\r\n  \"SecondaryInsurance\": {\r\n    \"Name\": \"Consolidated Health Care\",\r\n    \"Plan\": \"CHC (Gold Plan)\",\r\n    \"GroupID\": \"343434\",\r\n    \"MemberID\": \"7890567\",\r\n    \"Address1\": \"1239 NW Brocker Ave.\",\r\n    \"Address2\": \"Ste 390\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"\",\r\n    \"InsuredState\": \"\",\r\n    \"InsuredZipCode\": \"\",\r\n    \"InsuredCountry\": \"\",\r\n    \"InsuredPhone\": \"\",\r\n    \"InsuredWorkPhone\": \"\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\"\r\n  },\r\n  \"Guarantor\": {\r\n    \"LastName\": \"Bob\",\r\n    \"FirstName\": \"Bigboy\",\r\n    \"MiddleName\": \"\",\r\n    \"Address1\": \"\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"\",\r\n    \"State\": \"\",\r\n    \"ZipCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"Phone\": \"\",\r\n    \"WorkPhone\": \"\",\r\n    \"Relationship\": \"other\",\r\n    \"DateOfBirth\": \"\"\r\n  },\r\n  \"OrderLevelAOEList\": [\r\n    {\r\n      \"CodedValue\": \"YES\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1\"\r\n    },\r\n    {\r\n      \"CodedValue\": \"41\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1DETAILS\"\r\n    }\r\n  ],\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"AOE Demo Samples\",\r\n      \"Code\": \"1000000\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"This is a sample test to demo AOEs\",\r\n      \"TestID\": \"6835bf8d96984bac892e8a4c88b0f5f7\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n\t\t  \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"07/13/2016\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_strict1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"last year\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_loose1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"Display-only text\",\r\n          \"AOEID\": \"aoe.OBX_default1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_plain1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_styled1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_text_nolimit1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"1234\",\r\n          \"AOEID\": \"aoe.OBX_text_limitto41000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"012345678901234567890123456789\",\r\n         \"AOEID\": \"aoe.OBX_textbox1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"R\",\r\n          \"AOEID\": \"aoe.OBX_select1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"G\",\r\n         \"AOEID\": \"aoe.OBX_selectwithdefault1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"purple\",\r\n          \"AOEID\": \"aoe.OBX_selectcombo1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"C\",\r\n          \"AOEID\": \"aoe.OBX_selectmaster1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selectorslave1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"y\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"asdf\",\r\n          \"AOEID\": \"aoe.OBX_text_vis1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selector_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice1_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice2_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice3_details1000000\"\r\n        }\r\n      ],\r\n      \"SpecimenAOEList\": [\r\n        {\r\n          \"CodedValue\": \"nose\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-2\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"nose notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-2\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        {\"Code10\":\"S93.409\"}\r\n      ]\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n      \"Code\": \"1000001\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"comments for AOE shared demo test\",\r\n      \"TestID\": \"5f18aa0c93bd4935a748bee986195184\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        \r\n      ]\r\n    }\r\n  ],\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ResponsibleProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"PrimaryCareProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ReferringProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"MedicationList\": [\r\n    {\r\n      \"Description\": \"LIPITOR 20 MG TABS\",\r\n      \"GenericDescription\": \"ATORVASTATIN CALCIUM\",\r\n      \"DDID\": \"47943\",\r\n      \"GPICode\": \"39400010100320\",\r\n      \"NCDCode\": \"\",\r\n      \"Instructions\": \"\",\r\n      \"OnsetDate\": \"07/03/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"1688467130006110\",\r\n      \"Comments\": \"\",\r\n      \"Indications\": \"\"\r\n    }\r\n  ],\r\n  \"ProblemList\": [\r\n    {\r\n      \"Description\": \"CHOLELITHIASIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-574.20\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"CHEST PAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-786.50\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"AORTIC STENOSIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-424.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ASTHMA, MILD\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-493.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANKLE SPRAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-845.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANXIETY\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-300.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERTENSION\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-401.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"07/13/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"OSTEOPENIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-733.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPOTHYROIDISM\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-244.9\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERLIPIDEMIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-272.4\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"DIABETES INSIPIDUS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-253.5\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"10/13/2009\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    }\r\n  ],\r\n  \"ObservationList\": [\r\n    \r\n  ],\r\n  \"AllergyList\": [\r\n    {\r\n      \"Name\": \"PENICILLIN (PENICILLIN V POTASSIUM)\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"CriticalIndicator\": \"C\",\r\n      \"Classification\": \"DRUG\",\r\n      \"Description\": \"\",\r\n      \"GPICode\": \"0110000000\",\r\n      \"Severity\": \"\"\r\n    }\r\n  ],\r\n  \"DirectiveList\": [\r\n    {\r\n      \"Description\": \"NO ARTIFICIAL LIFE SUPPORT\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\"\r\n    }\r\n  ]\r\n}"
+						},
+						"description": "Update an Order. Requires an order to be included in the request body."
+					},
+					"response": []
+				},
+				{
+					"name": "Step3: Send Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"ResponseMsg\", data.ResponseMessage);\r",
+									"\r",
+									"var checkMessage = postman.getEnvironmentVariable(\"ResponseMsg\");\r",
+									"\r",
+									"tests[\"Check response message - Should be Order Sent\"] = checkMessage === \"Order Sent.\";\r",
+									"\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/send?EMRLinkOrderID={{EMRLinkOrderID}}&sendType=DIRECT",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"EMRLinkOrderID\": \"4195\",\r\n  \"ServiceProviderName\": \"NuLab\",\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"VisitID\": \"\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"APITEST-001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Test\",\r\n    \"FirstName\": \"API\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03/05/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"01/27/1972\",\r\n    \"InsuredGender\": \"Male\"\r\n  },\r\n  \"SecondaryInsurance\": {\r\n    \"Name\": \"Consolidated Health Care\",\r\n    \"Plan\": \"CHC (Gold Plan)\",\r\n    \"GroupID\": \"343434\",\r\n    \"MemberID\": \"7890567\",\r\n    \"Address1\": \"1239 NW Brocker Ave.\",\r\n    \"Address2\": \"Ste 390\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"\",\r\n    \"InsuredState\": \"\",\r\n    \"InsuredZipCode\": \"\",\r\n    \"InsuredCountry\": \"\",\r\n    \"InsuredPhone\": \"\",\r\n    \"InsuredWorkPhone\": \"\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\"\r\n  },\r\n  \"Guarantor\": {\r\n    \"LastName\": \"Bob\",\r\n    \"FirstName\": \"Bigboy\",\r\n    \"MiddleName\": \"\",\r\n    \"Address1\": \"\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"\",\r\n    \"State\": \"\",\r\n    \"ZipCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"Phone\": \"\",\r\n    \"WorkPhone\": \"\",\r\n    \"Relationship\": \"other\",\r\n    \"DateOfBirth\": \"\"\r\n  },\r\n  \"OrderLevelAOEList\": [\r\n    {\r\n      \"CodedValue\": \"YES\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1\"\r\n    },\r\n    {\r\n      \"CodedValue\": \"41\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1DETAILS\"\r\n    }\r\n  ],\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"AOE Demo Samples\",\r\n      \"Code\": \"1000000\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"This is a sample test to demo AOEs\",\r\n      \"TestID\": \"6835bf8d96984bac892e8a4c88b0f5f7\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n\t\t  \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"07/13/2016\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_strict1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"last year\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_loose1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"Display-only text\",\r\n          \"AOEID\": \"aoe.OBX_default1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_plain1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_styled1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_text_nolimit1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"1234\",\r\n          \"AOEID\": \"aoe.OBX_text_limitto41000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"012345678901234567890123456789\",\r\n         \"AOEID\": \"aoe.OBX_textbox1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"R\",\r\n          \"AOEID\": \"aoe.OBX_select1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"G\",\r\n         \"AOEID\": \"aoe.OBX_selectwithdefault1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"purple\",\r\n          \"AOEID\": \"aoe.OBX_selectcombo1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"C\",\r\n          \"AOEID\": \"aoe.OBX_selectmaster1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selectorslave1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"y\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"asdf\",\r\n          \"AOEID\": \"aoe.OBX_text_vis1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selector_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice1_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice2_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice3_details1000000\"\r\n        }\r\n      ],\r\n      \"SpecimenAOEList\": [\r\n        {\r\n          \"CodedValue\": \"nose\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-2\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"nose notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-2\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        {\"Code10\":\"S93.409\"}\r\n      ]\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n      \"Code\": \"1000001\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"comments for AOE shared demo test\",\r\n      \"TestID\": \"5f18aa0c93bd4935a748bee986195184\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        \r\n      ]\r\n    }\r\n  ],\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ResponsibleProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"PrimaryCareProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ReferringProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"MedicationList\": [\r\n    {\r\n      \"Description\": \"LIPITOR 20 MG TABS\",\r\n      \"GenericDescription\": \"ATORVASTATIN CALCIUM\",\r\n      \"DDID\": \"47943\",\r\n      \"GPICode\": \"39400010100320\",\r\n      \"NCDCode\": \"\",\r\n      \"Instructions\": \"\",\r\n      \"OnsetDate\": \"07/03/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"1688467130006110\",\r\n      \"Comments\": \"\",\r\n      \"Indications\": \"\"\r\n    }\r\n  ],\r\n  \"ProblemList\": [\r\n    {\r\n      \"Description\": \"CHOLELITHIASIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-574.20\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"CHEST PAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-786.50\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"AORTIC STENOSIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-424.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ASTHMA, MILD\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-493.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANKLE SPRAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-845.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANXIETY\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-300.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERTENSION\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-401.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"07/13/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"OSTEOPENIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-733.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPOTHYROIDISM\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-244.9\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERLIPIDEMIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-272.4\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"DIABETES INSIPIDUS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-253.5\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"10/13/2009\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    }\r\n  ],\r\n  \"ObservationList\": [\r\n    \r\n  ],\r\n  \"AllergyList\": [\r\n    {\r\n      \"Name\": \"PENICILLIN (PENICILLIN V POTASSIUM)\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"CriticalIndicator\": \"C\",\r\n      \"Classification\": \"DRUG\",\r\n      \"Description\": \"\",\r\n      \"GPICode\": \"0110000000\",\r\n      \"Severity\": \"\"\r\n    }\r\n  ],\r\n  \"DirectiveList\": [\r\n    {\r\n      \"Description\": \"NO ARTIFICIAL LIFE SUPPORT\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\"\r\n    }\r\n  ]\r\n}"
+						},
+						"description": "Send an order to the lab or psc. Requires an order to be included in the request body."
+					},
+					"response": []
+				},
+				{
+					"name": "Step4: Get Order - Validate Order Sent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"Status\", data.Order.Status);",
+									"",
+									"var checkStatus = postman.getEnvironmentVariable(\"Status\");",
+									"",
+									"tests[\"Check Order Status - Should be Sent to Lab\"] = checkStatus === \"SENT_TO_LAB\";",
+									"",
+									"postman.clearEnvironmentVariable(\"EMRLinkOrderID\");",
+									"postman.clearEnvironmentVariable(\"Pre_AltID\");",
+									"postman.clearEnvironmentVariable(\"AltID_Update\");",
+									"postman.clearEnvironmentVariable(\"Status\");",
+									"postman.clearEnvironmentVariable(\"ResponseMsg\");",
+									"postman.clearEnvironmentVariable(\"StatusMsg\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order?EMRLinkOrderID={{EMRLinkOrderID}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Get an order.  Requires an EMRLinkOrderID referencing the order to retrieve."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order - Test2 - Remove Unsent Order",
+			"description": "",
+			"item": [
+				{
+					"name": "R-Step1: Create Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"EMRLinkOrderID\", data.Order.EMRLinkOrderID);\r",
+									"postman.setEnvironmentVariable(\"StatusMsg\", data.Order.StatusMsg);\r",
+									"\r",
+									"var checkStatusMsg = postman.getEnvironmentVariable(\"StatusMsg\");\r",
+									"tests[\"Check Order Status - Should be Waiting to be sent\"] = checkStatusMsg === \"WAITING to be Sent\";"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var ts = new Date().getTime();\r",
+									"postman.setEnvironmentVariable(\"objectid\", \"acb\"+ts);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/create?allowTestAddition=false&requiredFieldCheck=NONE&sendImmediately=false",
+						"method": "POST",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"OrderID\": \"{{objectid}}\",\r\n  \"ServiceProviderName\": \"NuLab\",\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"VisitID\": \"\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"APITEST-001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Test\",\r\n    \"FirstName\": \"API\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03/05/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"01/27/1972\",\r\n    \"InsuredGender\": \"Male\"\r\n  },\r\n  \"SecondaryInsurance\": {\r\n    \"Name\": \"Consolidated Health Care\",\r\n    \"Plan\": \"CHC (Gold Plan)\",\r\n    \"GroupID\": \"343434\",\r\n    \"MemberID\": \"7890567\",\r\n    \"Address1\": \"1239 NW Brocker Ave.\",\r\n    \"Address2\": \"Ste 390\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"\",\r\n    \"InsuredState\": \"\",\r\n    \"InsuredZipCode\": \"\",\r\n    \"InsuredCountry\": \"\",\r\n    \"InsuredPhone\": \"\",\r\n    \"InsuredWorkPhone\": \"\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\"\r\n  },\r\n  \"Guarantor\": {\r\n    \"LastName\": \"Bob\",\r\n    \"FirstName\": \"Bigboy\",\r\n    \"MiddleName\": \"\",\r\n    \"Address1\": \"\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"\",\r\n    \"State\": \"\",\r\n    \"ZipCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"Phone\": \"\",\r\n    \"WorkPhone\": \"\",\r\n    \"Relationship\": \"other\",\r\n    \"DateOfBirth\": \"\"\r\n  },\r\n  \"OrderLevelAOEList\": [\r\n    {\r\n      \"CodedValue\": \"YES\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1\"\r\n    },\r\n    {\r\n      \"CodedValue\": \"41\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1DETAILS\"\r\n    }\r\n  ],\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"AOE Demo Samples\",\r\n      \"Code\": \"1000000\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"This is a sample test to demo AOEs\",\r\n      \"TestID\": \"6835bf8d96984bac892e8a4c88b0f5f7\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n\t\t  \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"07/13/2016\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_strict1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"last year\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_loose1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"Display-only text\",\r\n          \"AOEID\": \"aoe.OBX_default1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_plain1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_styled1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_text_nolimit1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"1234\",\r\n          \"AOEID\": \"aoe.OBX_text_limitto41000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"012345678901234567890123456789\",\r\n         \"AOEID\": \"aoe.OBX_textbox1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"R\",\r\n          \"AOEID\": \"aoe.OBX_select1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"G\",\r\n         \"AOEID\": \"aoe.OBX_selectwithdefault1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"purple\",\r\n          \"AOEID\": \"aoe.OBX_selectcombo1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"C\",\r\n          \"AOEID\": \"aoe.OBX_selectmaster1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selectorslave1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"y\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"asdf\",\r\n          \"AOEID\": \"aoe.OBX_text_vis1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selector_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice1_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice2_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice3_details1000000\"\r\n        }\r\n      ],\r\n      \"SpecimenAOEList\": [\r\n        {\r\n          \"CodedValue\": \"nose\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-2\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"nose notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-2\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        {\"Code10\":\"S93.409\"}\r\n      ]\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n      \"Code\": \"1000001\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"comments for AOE shared demo test\",\r\n      \"TestID\": \"5f18aa0c93bd4935a748bee986195184\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        \r\n      ]\r\n    }\r\n  ],\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ResponsibleProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"PrimaryCareProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ReferringProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"MedicationList\": [\r\n    {\r\n      \"Description\": \"LIPITOR 20 MG TABS\",\r\n      \"GenericDescription\": \"ATORVASTATIN CALCIUM\",\r\n      \"DDID\": \"47943\",\r\n      \"GPICode\": \"39400010100320\",\r\n      \"NCDCode\": \"\",\r\n      \"Instructions\": \"\",\r\n      \"OnsetDate\": \"07/03/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"1688467130006110\",\r\n      \"Comments\": \"\",\r\n      \"Indications\": \"\"\r\n    }\r\n  ],\r\n  \"ProblemList\": [\r\n    {\r\n      \"Description\": \"CHOLELITHIASIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-574.20\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"CHEST PAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-786.50\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"AORTIC STENOSIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-424.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ASTHMA, MILD\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-493.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANKLE SPRAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-845.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANXIETY\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-300.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERTENSION\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-401.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"07/13/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"OSTEOPENIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-733.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPOTHYROIDISM\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-244.9\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERLIPIDEMIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-272.4\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"DIABETES INSIPIDUS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-253.5\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"10/13/2009\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    }\r\n  ],\r\n  \"ObservationList\": [\r\n    \r\n  ],\r\n  \"AllergyList\": [\r\n    {\r\n      \"Name\": \"PENICILLIN (PENICILLIN V POTASSIUM)\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"CriticalIndicator\": \"C\",\r\n      \"Classification\": \"DRUG\",\r\n      \"Description\": \"\",\r\n      \"GPICode\": \"0110000000\",\r\n      \"Severity\": \"\"\r\n    }\r\n  ],\r\n  \"DirectiveList\": [\r\n    {\r\n      \"Description\": \"NO ARTIFICIAL LIFE SUPPORT\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\"\r\n    }\r\n  ]\r\n}\r\n"
+						},
+						"description": "Create an order. Requires an order to be included in the request body.\nChange the \"OrderID\" in the body JSON if an order already exists in EMR-Link with that orderID."
+					},
+					"response": []
+				},
+				{
+					"name": "R-Step2: Remove Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"ErrorMsg\", data.ErrorMessage);",
+									"",
+									"var checkStatus = postman.getEnvironmentVariable(\"ErrorMsg\");",
+									"",
+									"tests[\"Check Remove Error message - Should be null\"] = checkStatus === \"\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/remove?EMRLinkOrderID={{EMRLinkOrderID}}&permanently=false&reason",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Remove an order. Requires an EMRLinkOrderID referencing the order."
+					},
+					"response": []
+				},
+				{
+					"name": "R-Step3: Get Order - validate removed order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"RemoveStatus\", data.Order.Status);",
+									"",
+									"var checkStatus = postman.getEnvironmentVariable(\"RemoveStatus\");",
+									"",
+									"tests[\"Check Order Status - Should be Removed\"] = checkStatus === \"REMOVED\";",
+									"",
+									"postman.clearEnvironmentVariable(\"EMRLinkOrderID\");",
+									"postman.clearEnvironmentVariable(\"RemoveStatus\");",
+									"postman.clearEnvironmentVariable(\"StatusMsg\");",
+									"postman.clearEnvironmentVariable(\"ErrorMsg\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order?EMRLinkOrderID={{EMRLinkOrderID}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Get an order.  Requires an EMRLinkOrderID referencing the order to retrieve."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order - Test3 - Remove SENT Order",
+			"description": "",
+			"item": [
+				{
+					"name": "RS-Step1 : Create Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"EMRLinkOrderID\", data.Order.EMRLinkOrderID);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var ts = new Date().getTime();\r",
+									"postman.setEnvironmentVariable(\"objectid\", \"acb\"+ts);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/create?allowTestAddition=false&requiredFieldCheck=NONE&sendImmediately=false",
+						"method": "POST",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"OrderID\": \"{{objectid}}\",\r\n  \"ServiceProviderName\": \"NuLab\",\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"VisitID\": \"\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"APITEST-001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Test\",\r\n    \"FirstName\": \"API\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03/05/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"01/27/1972\",\r\n    \"InsuredGender\": \"Male\"\r\n  },\r\n  \"SecondaryInsurance\": {\r\n    \"Name\": \"Consolidated Health Care\",\r\n    \"Plan\": \"CHC (Gold Plan)\",\r\n    \"GroupID\": \"343434\",\r\n    \"MemberID\": \"7890567\",\r\n    \"Address1\": \"1239 NW Brocker Ave.\",\r\n    \"Address2\": \"Ste 390\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"\",\r\n    \"InsuredState\": \"\",\r\n    \"InsuredZipCode\": \"\",\r\n    \"InsuredCountry\": \"\",\r\n    \"InsuredPhone\": \"\",\r\n    \"InsuredWorkPhone\": \"\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\"\r\n  },\r\n  \"Guarantor\": {\r\n    \"LastName\": \"Bob\",\r\n    \"FirstName\": \"Bigboy\",\r\n    \"MiddleName\": \"\",\r\n    \"Address1\": \"\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"\",\r\n    \"State\": \"\",\r\n    \"ZipCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"Phone\": \"\",\r\n    \"WorkPhone\": \"\",\r\n    \"Relationship\": \"other\",\r\n    \"DateOfBirth\": \"\"\r\n  },\r\n  \"OrderLevelAOEList\": [\r\n    {\r\n      \"CodedValue\": \"YES\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1\"\r\n    },\r\n    {\r\n      \"CodedValue\": \"41\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1DETAILS\"\r\n    }\r\n  ],\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"AOE Demo Samples\",\r\n      \"Code\": \"1000000\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"This is a sample test to demo AOEs\",\r\n      \"TestID\": \"6835bf8d96984bac892e8a4c88b0f5f7\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n\t\t  \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"07/13/2016\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_strict1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"last year\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_loose1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"Display-only text\",\r\n          \"AOEID\": \"aoe.OBX_default1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_plain1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_styled1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_text_nolimit1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"1234\",\r\n          \"AOEID\": \"aoe.OBX_text_limitto41000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"012345678901234567890123456789\",\r\n         \"AOEID\": \"aoe.OBX_textbox1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"R\",\r\n          \"AOEID\": \"aoe.OBX_select1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"G\",\r\n         \"AOEID\": \"aoe.OBX_selectwithdefault1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"purple\",\r\n          \"AOEID\": \"aoe.OBX_selectcombo1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"C\",\r\n          \"AOEID\": \"aoe.OBX_selectmaster1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selectorslave1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"y\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"asdf\",\r\n          \"AOEID\": \"aoe.OBX_text_vis1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selector_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice1_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice2_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice3_details1000000\"\r\n        }\r\n      ],\r\n      \"SpecimenAOEList\": [\r\n        {\r\n          \"CodedValue\": \"nose\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-2\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"nose notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-2\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        {\"Code10\":\"S93.409\"}\r\n      ]\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n      \"Code\": \"1000001\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"comments for AOE shared demo test\",\r\n      \"TestID\": \"5f18aa0c93bd4935a748bee986195184\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        \r\n      ]\r\n    }\r\n  ],\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ResponsibleProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"PrimaryCareProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ReferringProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"MedicationList\": [\r\n    {\r\n      \"Description\": \"LIPITOR 20 MG TABS\",\r\n      \"GenericDescription\": \"ATORVASTATIN CALCIUM\",\r\n      \"DDID\": \"47943\",\r\n      \"GPICode\": \"39400010100320\",\r\n      \"NCDCode\": \"\",\r\n      \"Instructions\": \"\",\r\n      \"OnsetDate\": \"07/03/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"1688467130006110\",\r\n      \"Comments\": \"\",\r\n      \"Indications\": \"\"\r\n    }\r\n  ],\r\n  \"ProblemList\": [\r\n    {\r\n      \"Description\": \"CHOLELITHIASIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-574.20\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"CHEST PAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-786.50\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"AORTIC STENOSIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-424.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ASTHMA, MILD\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-493.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANKLE SPRAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-845.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANXIETY\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-300.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERTENSION\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-401.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"07/13/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"OSTEOPENIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-733.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPOTHYROIDISM\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-244.9\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERLIPIDEMIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-272.4\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"DIABETES INSIPIDUS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-253.5\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"10/13/2009\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    }\r\n  ],\r\n  \"ObservationList\": [\r\n    \r\n  ],\r\n  \"AllergyList\": [\r\n    {\r\n      \"Name\": \"PENICILLIN (PENICILLIN V POTASSIUM)\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"CriticalIndicator\": \"C\",\r\n      \"Classification\": \"DRUG\",\r\n      \"Description\": \"\",\r\n      \"GPICode\": \"0110000000\",\r\n      \"Severity\": \"\"\r\n    }\r\n  ],\r\n  \"DirectiveList\": [\r\n    {\r\n      \"Description\": \"NO ARTIFICIAL LIFE SUPPORT\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\"\r\n    }\r\n  ]\r\n}\r\n"
+						},
+						"description": "Create an order. Requires an order to be included in the request body.\nChange the \"OrderID\" in the body JSON if an order already exists in EMR-Link with that orderID."
+					},
+					"response": []
+				},
+				{
+					"name": "RS-Step2 : Send Order copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"ResponseMsg\", data.ResponseMessage);\r",
+									"\r",
+									"var checkMessage = postman.getEnvironmentVariable(\"ResponseMsg\");\r",
+									"\r",
+									"tests[\"Check response message - Should be Order Sent\"] = checkMessage === \"Order Sent.\";\r",
+									"\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/send?EMRLinkOrderID={{EMRLinkOrderID}}&sendType=DIRECT",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"EMRLinkOrderID\": \"4195\",\r\n  \"ServiceProviderName\": \"NuLab\",\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"VisitID\": \"\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"APITEST-001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Test\",\r\n    \"FirstName\": \"API\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03/05/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"01/27/1972\",\r\n    \"InsuredGender\": \"Male\"\r\n  },\r\n  \"SecondaryInsurance\": {\r\n    \"Name\": \"Consolidated Health Care\",\r\n    \"Plan\": \"CHC (Gold Plan)\",\r\n    \"GroupID\": \"343434\",\r\n    \"MemberID\": \"7890567\",\r\n    \"Address1\": \"1239 NW Brocker Ave.\",\r\n    \"Address2\": \"Ste 390\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"\",\r\n    \"InsuredState\": \"\",\r\n    \"InsuredZipCode\": \"\",\r\n    \"InsuredCountry\": \"\",\r\n    \"InsuredPhone\": \"\",\r\n    \"InsuredWorkPhone\": \"\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\"\r\n  },\r\n  \"Guarantor\": {\r\n    \"LastName\": \"Bob\",\r\n    \"FirstName\": \"Bigboy\",\r\n    \"MiddleName\": \"\",\r\n    \"Address1\": \"\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"\",\r\n    \"State\": \"\",\r\n    \"ZipCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"Phone\": \"\",\r\n    \"WorkPhone\": \"\",\r\n    \"Relationship\": \"other\",\r\n    \"DateOfBirth\": \"\"\r\n  },\r\n  \"OrderLevelAOEList\": [\r\n    {\r\n      \"CodedValue\": \"YES\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1\"\r\n    },\r\n    {\r\n      \"CodedValue\": \"41\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1DETAILS\"\r\n    }\r\n  ],\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"AOE Demo Samples\",\r\n      \"Code\": \"1000000\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"This is a sample test to demo AOEs\",\r\n      \"TestID\": \"6835bf8d96984bac892e8a4c88b0f5f7\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n\t\t  \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"07/13/2016\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_strict1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"last year\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_loose1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"Display-only text\",\r\n          \"AOEID\": \"aoe.OBX_default1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_plain1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_styled1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_text_nolimit1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"1234\",\r\n          \"AOEID\": \"aoe.OBX_text_limitto41000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"012345678901234567890123456789\",\r\n         \"AOEID\": \"aoe.OBX_textbox1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"R\",\r\n          \"AOEID\": \"aoe.OBX_select1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"G\",\r\n         \"AOEID\": \"aoe.OBX_selectwithdefault1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"purple\",\r\n          \"AOEID\": \"aoe.OBX_selectcombo1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"C\",\r\n          \"AOEID\": \"aoe.OBX_selectmaster1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selectorslave1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"y\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"asdf\",\r\n          \"AOEID\": \"aoe.OBX_text_vis1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selector_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice1_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice2_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice3_details1000000\"\r\n        }\r\n      ],\r\n      \"SpecimenAOEList\": [\r\n        {\r\n          \"CodedValue\": \"nose\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-2\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"nose notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-2\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        {\"Code10\":\"S93.409\"}\r\n      ]\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n      \"Code\": \"1000001\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"comments for AOE shared demo test\",\r\n      \"TestID\": \"5f18aa0c93bd4935a748bee986195184\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        \r\n      ]\r\n    }\r\n  ],\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ResponsibleProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"PrimaryCareProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ReferringProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"MedicationList\": [\r\n    {\r\n      \"Description\": \"LIPITOR 20 MG TABS\",\r\n      \"GenericDescription\": \"ATORVASTATIN CALCIUM\",\r\n      \"DDID\": \"47943\",\r\n      \"GPICode\": \"39400010100320\",\r\n      \"NCDCode\": \"\",\r\n      \"Instructions\": \"\",\r\n      \"OnsetDate\": \"07/03/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"1688467130006110\",\r\n      \"Comments\": \"\",\r\n      \"Indications\": \"\"\r\n    }\r\n  ],\r\n  \"ProblemList\": [\r\n    {\r\n      \"Description\": \"CHOLELITHIASIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-574.20\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"CHEST PAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-786.50\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"AORTIC STENOSIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-424.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ASTHMA, MILD\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-493.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANKLE SPRAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-845.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANXIETY\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-300.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERTENSION\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-401.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"07/13/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"OSTEOPENIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-733.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPOTHYROIDISM\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-244.9\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERLIPIDEMIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-272.4\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"DIABETES INSIPIDUS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-253.5\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"10/13/2009\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    }\r\n  ],\r\n  \"ObservationList\": [\r\n    \r\n  ],\r\n  \"AllergyList\": [\r\n    {\r\n      \"Name\": \"PENICILLIN (PENICILLIN V POTASSIUM)\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"CriticalIndicator\": \"C\",\r\n      \"Classification\": \"DRUG\",\r\n      \"Description\": \"\",\r\n      \"GPICode\": \"0110000000\",\r\n      \"Severity\": \"\"\r\n    }\r\n  ],\r\n  \"DirectiveList\": [\r\n    {\r\n      \"Description\": \"NO ARTIFICIAL LIFE SUPPORT\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\"\r\n    }\r\n  ]\r\n}"
+						},
+						"description": "Send an order to the lab or psc. Requires an order to be included in the request body."
+					},
+					"response": []
+				},
+				{
+					"name": "RS-Step3 : Remove Order copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"ErrorMsg\", data.ErrorMessage);",
+									"",
+									"var checkStatus = postman.getEnvironmentVariable(\"ErrorMsg\");",
+									"",
+									"tests[\"Check Status - Should see message of 'Order cannot be removed because it has already been sent to the service provider.' \"] = checkStatus === \"Order cannot be removed because it has already been sent to the service provider.\";",
+									"",
+									"postman.clearEnvironmentVariable(\"EMRLinkOrderID\");",
+									"postman.clearEnvironmentVariable(\"RemoveStatus\");",
+									"postman.clearEnvironmentVariable(\"StatusMsg\");",
+									"postman.clearEnvironmentVariable(\"DefaultAccount\");",
+									"postman.clearEnvironmentVariable(\"ErrorMsg\");",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/remove?EMRLinkOrderID={{EMRLinkOrderID}}&permanently=false&reason",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Remove an order. Requires an EMRLinkOrderID referencing the order."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order - Test4 - Patient and Order Activity",
+			"description": "",
+			"item": [
+				{
+					"name": "Get Patient's Order List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"\r",
+									"tests[\"Check Return Patient Name Match\"] = responseBody.has(\"Pan\");\r",
+									"\r",
+									"//tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/orders/patientorderlist?patientid=690&lastname=Pan&firstname=Tick&dob=04/15/1962&startdate=01/01/2015&todayonly=false&includeremoved=true",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"EMRLinkOrderID\": \"4195\",\r\n  \"ServiceProviderName\": \"NuLab\",\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"VisitID\": \"\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"APITEST-001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Test\",\r\n    \"FirstName\": \"API\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03/05/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"01/27/1972\",\r\n    \"InsuredGender\": \"Male\"\r\n  },\r\n  \"SecondaryInsurance\": {\r\n    \"Name\": \"Consolidated Health Care\",\r\n    \"Plan\": \"CHC (Gold Plan)\",\r\n    \"GroupID\": \"343434\",\r\n    \"MemberID\": \"7890567\",\r\n    \"Address1\": \"1239 NW Brocker Ave.\",\r\n    \"Address2\": \"Ste 390\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"\",\r\n    \"InsuredState\": \"\",\r\n    \"InsuredZipCode\": \"\",\r\n    \"InsuredCountry\": \"\",\r\n    \"InsuredPhone\": \"\",\r\n    \"InsuredWorkPhone\": \"\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\"\r\n  },\r\n  \"Guarantor\": {\r\n    \"LastName\": \"Bob\",\r\n    \"FirstName\": \"Bigboy\",\r\n    \"MiddleName\": \"\",\r\n    \"Address1\": \"\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"\",\r\n    \"State\": \"\",\r\n    \"ZipCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"Phone\": \"\",\r\n    \"WorkPhone\": \"\",\r\n    \"Relationship\": \"other\",\r\n    \"DateOfBirth\": \"\"\r\n  },\r\n  \"OrderLevelAOEList\": [\r\n    {\r\n      \"CodedValue\": \"YES\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1\"\r\n    },\r\n    {\r\n      \"CodedValue\": \"41\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1DETAILS\"\r\n    }\r\n  ],\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"AOE Demo Samples\",\r\n      \"Code\": \"1000000\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"This is a sample test to demo AOEs\",\r\n      \"TestID\": \"6835bf8d96984bac892e8a4c88b0f5f7\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n\t\t  \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"07/13/2016\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_strict1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"last year\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_loose1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"Display-only text\",\r\n          \"AOEID\": \"aoe.OBX_default1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_plain1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_styled1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_text_nolimit1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"1234\",\r\n          \"AOEID\": \"aoe.OBX_text_limitto41000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"012345678901234567890123456789\",\r\n         \"AOEID\": \"aoe.OBX_textbox1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"R\",\r\n          \"AOEID\": \"aoe.OBX_select1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"G\",\r\n         \"AOEID\": \"aoe.OBX_selectwithdefault1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"purple\",\r\n          \"AOEID\": \"aoe.OBX_selectcombo1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"C\",\r\n          \"AOEID\": \"aoe.OBX_selectmaster1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selectorslave1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"y\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"asdf\",\r\n          \"AOEID\": \"aoe.OBX_text_vis1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selector_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice1_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice2_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice3_details1000000\"\r\n        }\r\n      ],\r\n      \"SpecimenAOEList\": [\r\n        {\r\n          \"CodedValue\": \"nose\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-2\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"nose notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-2\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        {\"Code10\":\"S93.409\"}\r\n      ]\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n      \"Code\": \"1000001\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"comments for AOE shared demo test\",\r\n      \"TestID\": \"5f18aa0c93bd4935a748bee986195184\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        \r\n      ]\r\n    }\r\n  ],\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ResponsibleProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"PrimaryCareProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ReferringProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"MedicationList\": [\r\n    {\r\n      \"Description\": \"LIPITOR 20 MG TABS\",\r\n      \"GenericDescription\": \"ATORVASTATIN CALCIUM\",\r\n      \"DDID\": \"47943\",\r\n      \"GPICode\": \"39400010100320\",\r\n      \"NCDCode\": \"\",\r\n      \"Instructions\": \"\",\r\n      \"OnsetDate\": \"07/03/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"1688467130006110\",\r\n      \"Comments\": \"\",\r\n      \"Indications\": \"\"\r\n    }\r\n  ],\r\n  \"ProblemList\": [\r\n    {\r\n      \"Description\": \"CHOLELITHIASIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-574.20\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"CHEST PAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-786.50\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"AORTIC STENOSIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-424.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ASTHMA, MILD\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-493.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANKLE SPRAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-845.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANXIETY\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-300.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERTENSION\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-401.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"07/13/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"OSTEOPENIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-733.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPOTHYROIDISM\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-244.9\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERLIPIDEMIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-272.4\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"DIABETES INSIPIDUS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-253.5\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"10/13/2009\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    }\r\n  ],\r\n  \"ObservationList\": [\r\n    \r\n  ],\r\n  \"AllergyList\": [\r\n    {\r\n      \"Name\": \"PENICILLIN (PENICILLIN V POTASSIUM)\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"CriticalIndicator\": \"C\",\r\n      \"Classification\": \"DRUG\",\r\n      \"Description\": \"\",\r\n      \"GPICode\": \"0110000000\",\r\n      \"Severity\": \"\"\r\n    }\r\n  ],\r\n  \"DirectiveList\": [\r\n    {\r\n      \"Description\": \"NO ARTIFICIAL LIFE SUPPORT\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\"\r\n    }\r\n  ]\r\n}"
+						},
+						"description": "Get a list of patient's orders."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Activity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Check Return Order for 10/14/2015\"] = responseBody.has(\"215\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/orders/activity?startdate=10/14/2015",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"EMRLinkOrderID\": \"4195\",\r\n  \"ServiceProviderName\": \"NuLab\",\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"VisitID\": \"\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"APITEST-001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Test\",\r\n    \"FirstName\": \"API\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03/05/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"01/27/1972\",\r\n    \"InsuredGender\": \"Male\"\r\n  },\r\n  \"SecondaryInsurance\": {\r\n    \"Name\": \"Consolidated Health Care\",\r\n    \"Plan\": \"CHC (Gold Plan)\",\r\n    \"GroupID\": \"343434\",\r\n    \"MemberID\": \"7890567\",\r\n    \"Address1\": \"1239 NW Brocker Ave.\",\r\n    \"Address2\": \"Ste 390\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"\",\r\n    \"InsuredState\": \"\",\r\n    \"InsuredZipCode\": \"\",\r\n    \"InsuredCountry\": \"\",\r\n    \"InsuredPhone\": \"\",\r\n    \"InsuredWorkPhone\": \"\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\"\r\n  },\r\n  \"Guarantor\": {\r\n    \"LastName\": \"Bob\",\r\n    \"FirstName\": \"Bigboy\",\r\n    \"MiddleName\": \"\",\r\n    \"Address1\": \"\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"\",\r\n    \"State\": \"\",\r\n    \"ZipCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"Phone\": \"\",\r\n    \"WorkPhone\": \"\",\r\n    \"Relationship\": \"other\",\r\n    \"DateOfBirth\": \"\"\r\n  },\r\n  \"OrderLevelAOEList\": [\r\n    {\r\n      \"CodedValue\": \"YES\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1\"\r\n    },\r\n    {\r\n      \"CodedValue\": \"41\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1DETAILS\"\r\n    }\r\n  ],\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"AOE Demo Samples\",\r\n      \"Code\": \"1000000\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"This is a sample test to demo AOEs\",\r\n      \"TestID\": \"6835bf8d96984bac892e8a4c88b0f5f7\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n\t\t  \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"07/13/2016\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_strict1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"last year\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_loose1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"Display-only text\",\r\n          \"AOEID\": \"aoe.OBX_default1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_plain1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_styled1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_text_nolimit1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"1234\",\r\n          \"AOEID\": \"aoe.OBX_text_limitto41000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"012345678901234567890123456789\",\r\n         \"AOEID\": \"aoe.OBX_textbox1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"R\",\r\n          \"AOEID\": \"aoe.OBX_select1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"G\",\r\n         \"AOEID\": \"aoe.OBX_selectwithdefault1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"purple\",\r\n          \"AOEID\": \"aoe.OBX_selectcombo1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"C\",\r\n          \"AOEID\": \"aoe.OBX_selectmaster1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selectorslave1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"y\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"asdf\",\r\n          \"AOEID\": \"aoe.OBX_text_vis1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selector_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice1_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice2_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice3_details1000000\"\r\n        }\r\n      ],\r\n      \"SpecimenAOEList\": [\r\n        {\r\n          \"CodedValue\": \"nose\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-2\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"nose notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-2\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        {\"Code10\":\"S93.409\"}\r\n      ]\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n      \"Code\": \"1000001\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"comments for AOE shared demo test\",\r\n      \"TestID\": \"5f18aa0c93bd4935a748bee986195184\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        \r\n      ]\r\n    }\r\n  ],\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ResponsibleProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"PrimaryCareProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ReferringProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"MedicationList\": [\r\n    {\r\n      \"Description\": \"LIPITOR 20 MG TABS\",\r\n      \"GenericDescription\": \"ATORVASTATIN CALCIUM\",\r\n      \"DDID\": \"47943\",\r\n      \"GPICode\": \"39400010100320\",\r\n      \"NCDCode\": \"\",\r\n      \"Instructions\": \"\",\r\n      \"OnsetDate\": \"07/03/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"1688467130006110\",\r\n      \"Comments\": \"\",\r\n      \"Indications\": \"\"\r\n    }\r\n  ],\r\n  \"ProblemList\": [\r\n    {\r\n      \"Description\": \"CHOLELITHIASIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-574.20\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"CHEST PAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-786.50\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"AORTIC STENOSIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-424.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ASTHMA, MILD\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-493.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANKLE SPRAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-845.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANXIETY\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-300.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERTENSION\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-401.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"07/13/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"OSTEOPENIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-733.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPOTHYROIDISM\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-244.9\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERLIPIDEMIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-272.4\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"DIABETES INSIPIDUS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-253.5\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"10/13/2009\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    }\r\n  ],\r\n  \"ObservationList\": [\r\n    \r\n  ],\r\n  \"AllergyList\": [\r\n    {\r\n      \"Name\": \"PENICILLIN (PENICILLIN V POTASSIUM)\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"CriticalIndicator\": \"C\",\r\n      \"Classification\": \"DRUG\",\r\n      \"Description\": \"\",\r\n      \"GPICode\": \"0110000000\",\r\n      \"Severity\": \"\"\r\n    }\r\n  ],\r\n  \"DirectiveList\": [\r\n    {\r\n      \"Description\": \"NO ARTIFICIAL LIFE SUPPORT\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\"\r\n    }\r\n  ]\r\n}"
+						},
+						"description": "Get activity information related to orders for a given date/time through the end of day."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Organization",
+			"description": "",
+			"item": [
+				{
+					"name": "Get Providers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var body = JSON.parse(responseBody);\r",
+									"//tests[\"Posts length is \" + body.Providers && body.Providers.length] = true;\r",
+									"\r",
+									"var expectedCount = 60\r",
+									"\r",
+									"tests[\"Expected Provider count is : \" + expectedCount ] = body.Providers.length === expectedCount;\r",
+									"\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/organization/providers",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Get a list of providers from the organization."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Sets",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var body = JSON.parse(responseBody);\r",
+									"//tests[\"Posts length is \" + body.Providers && body.Providers.length] = true;\r",
+									"\r",
+									"var expectedCount = 3\r",
+									"\r",
+									"tests[\"Expected Order Set count is : \" + expectedCount ] = body.OrderSets.length === expectedCount;"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/organization/ordersets",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Get a list of order sets from the organization."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Service Provider Accounts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var body = JSON.parse(responseBody);\r",
+									"\r",
+									"var expectedCount = 2\r",
+									"\r",
+									"tests[\"Expected Account List count is : \" + expectedCount ] = body.AccountList.length === expectedCount;"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/organization/serviceprovideraccounts?serviceprovidername=",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Get a list of service provider accounts from the organization."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Service Providers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var body = JSON.parse(responseBody);\r",
+									"\r",
+									"var expectedCount = 3\r",
+									"\r",
+									"tests[\"Expected Service Provider - Lab List - count is : \" + expectedCount ] = body.ServiceProviders.length === expectedCount;"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/organization/serviceproviders?forOrdersOnly=false",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Get a list of service providers from the organization."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Order Map",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var body = JSON.parse(responseBody);\r",
+									"\r",
+									"var expectedCount = 6\r",
+									"\r",
+									"tests[\"Expected Order Map search for CBC count is : \" + expectedCount ] = body.DefaultServiceProviderResults.length === expectedCount;"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/organization/searchordermap?searchtext=cbc&searchfield=ORDERING_DESCRIPTION&searchtype=STARTINGWITH&defaultserviceprovider=NuLab&preferredserviceprovider",
+						"method": "GET",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Search the order map of a given service provider."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Other",
+			"description": "",
+			"item": [
+				{
+					"name": "Get Default Service Provider",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Check Default Provider\"] = responseBody.has(\"Nulab\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/defaultserviceprovider",
+						"method": "POST",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"72-TEST001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Patient\",\r\n    \"FirstName\": \"IgnisTest\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03\\/05\\/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"CarrierID\": \"BHI200\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\",\r\n    \"WorkersComp\": \"\",\r\n    \"WorkersCompEmployer\": \"\",\r\n    \"BillingOverrideName\": \"\",\r\n    \"BillingOverrideNumber\": \"\",\r\n    \"BillingOverrideAddress\": \"\",\r\n    \"BillingOverrideSubscriberLastName\": \"\",\r\n    \"BillingOverrideSubscriberFirstName\": \"\"\r\n  },\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"hwinston\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"hwinston\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"Gourlay\",\r\n    \"FirstName\": \"Michael\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"mgourlay\"\r\n  }\r\n}\r\n"
+						},
+						"description": "Get the default service provider for an order.  A full order object must be sent in the body of request."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Routing and Splitting",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/routing",
+						"method": "POST",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6OWExOGYyYTMtZmVhYS1jZTU4LTg0ZjItNDg0N2Y2NmRkOTA2",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"72-TEST001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Patient\",\r\n    \"FirstName\": \"IgnisTest\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03\\/05\\/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"CarrierID\": \"BHI200\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\",\r\n    \"WorkersComp\": \"\",\r\n    \"WorkersCompEmployer\": \"\",\r\n    \"BillingOverrideName\": \"\",\r\n    \"BillingOverrideNumber\": \"\",\r\n    \"BillingOverrideAddress\": \"\",\r\n    \"BillingOverrideSubscriberLastName\": \"\",\r\n    \"BillingOverrideSubscriberFirstName\": \"\"\r\n  },\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"CBC\",\r\n      \"Comments\": \"Default Lab (NuLab)\"\r\n    },\r\n   {\r\n      \"Description\": \"Uncoded test\",\r\n      \"Comments\": \"Default Lab (NuLab) Uncoded test\"\r\n    },\r\n    {\r\n      \"Description\": \"CBC W/ Diff, Platelets\",\r\n      \"Comments\": \"Preferred lab (Affiliated)\"\r\n    },\r\n   {\"Description\":\"Creatinine, Urine\",\r\n     \"Comments\": \"Default Lab (NuLab), URINE category\"\r\n   },\r\n   {\"Description\":\"Stone Analysis\",\r\n     \"Comments\": \"Default Lab (NuLab), ZZ category\"\r\n   },\r\n   {\"Description\":\"ALBUMIN, SERUM\",\r\n     \"Comments\": \"Preferred lab (Affiliated), SERUM category\"\r\n   },\r\n   {\"Description\":\"ALBUMIN, SERUM\",\r\n     \"Comments\": \"Preferred lab (Affiliated), SERUM category, duplicate\"\r\n   }\r\n  ]\r\n}\r\n"
+						},
+						"description": "The the routing and splitting information for an order.  Requires an order to be included in the request body."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Required Fields",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/requiredfields",
+						"method": "POST",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6OWExOGYyYTMtZmVhYS1jZTU4LTg0ZjItNDg0N2Y2NmRkOTA2",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"OrderID\": \"ab4ac3a1af0d4d83b8e26dea059c8d640\",\r\n  \"ServiceProviderName\": \"NuLab\",\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"VisitID\": \"\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"APITEST-001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Test\",\r\n    \"FirstName\": \"API\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03/05/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"01/27/1972\",\r\n    \"InsuredGender\": \"Male\"\r\n  },\r\n  \"SecondaryInsurance\": {\r\n    \"Name\": \"Consolidated Health Care\",\r\n    \"Plan\": \"CHC (Gold Plan)\",\r\n    \"GroupID\": \"343434\",\r\n    \"MemberID\": \"7890567\",\r\n    \"Address1\": \"1239 NW Brocker Ave.\",\r\n    \"Address2\": \"Ste 390\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"\",\r\n    \"InsuredState\": \"\",\r\n    \"InsuredZipCode\": \"\",\r\n    \"InsuredCountry\": \"\",\r\n    \"InsuredPhone\": \"\",\r\n    \"InsuredWorkPhone\": \"\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\"\r\n  },\r\n  \"Guarantor\": {\r\n    \"LastName\": \"Bob\",\r\n    \"FirstName\": \"Bigboy\",\r\n    \"MiddleName\": \"\",\r\n    \"Address1\": \"\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"\",\r\n    \"State\": \"\",\r\n    \"ZipCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"Phone\": \"\",\r\n    \"WorkPhone\": \"\",\r\n    \"Relationship\": \"other\",\r\n    \"DateOfBirth\": \"\"\r\n  },\r\n  \"OrderLevelAOEList\": [\r\n    {\r\n      \"CodedValue\": \"YES\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1\"\r\n    },\r\n    {\r\n      \"CodedValue\": \"41\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1DETAILS\"\r\n    }\r\n  ],\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"AOE Demo Samples\",\r\n      \"Code\": \"1000000\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"This is a sample test to demo AOEs\",\r\n      \"TestID\": \"6835bf8d96984bac892e8a4c88b0f5f7\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n\t\t  \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"07/13/2016\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_strict1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"last year\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_loose1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"Display-only text\",\r\n          \"AOEID\": \"aoe.OBX_default1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_plain1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_styled1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_text_nolimit1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"1234\",\r\n          \"AOEID\": \"aoe.OBX_text_limitto41000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"012345678901234567890123456789\",\r\n         \"AOEID\": \"aoe.OBX_textbox1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"R\",\r\n          \"AOEID\": \"aoe.OBX_select1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"G\",\r\n         \"AOEID\": \"aoe.OBX_selectwithdefault1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"purple\",\r\n          \"AOEID\": \"aoe.OBX_selectcombo1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"C\",\r\n          \"AOEID\": \"aoe.OBX_selectmaster1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selectorslave1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"y\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"asdf\",\r\n          \"AOEID\": \"aoe.OBX_text_vis1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selector_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice1_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice2_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice3_details1000000\"\r\n        }\r\n      ],\r\n      \"SpecimenAOEList\": [\r\n        {\r\n          \"CodedValue\": \"nose\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-2\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"nose notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-2\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        {\"Code10\":\"S93.409\"}\r\n      ]\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n      \"Code\": \"1000001\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"comments for AOE shared demo test\",\r\n      \"TestID\": \"5f18aa0c93bd4935a748bee986195184\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        \r\n      ]\r\n    }\r\n  ],\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ResponsibleProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"PrimaryCareProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ReferringProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"MedicationList\": [\r\n    {\r\n      \"Description\": \"LIPITOR 20 MG TABS\",\r\n      \"GenericDescription\": \"ATORVASTATIN CALCIUM\",\r\n      \"DDID\": \"47943\",\r\n      \"GPICode\": \"39400010100320\",\r\n      \"NCDCode\": \"\",\r\n      \"Instructions\": \"\",\r\n      \"OnsetDate\": \"07/03/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"1688467130006110\",\r\n      \"Comments\": \"\",\r\n      \"Indications\": \"\"\r\n    }\r\n  ],\r\n  \"ProblemList\": [\r\n    {\r\n      \"Description\": \"CHOLELITHIASIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-574.20\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"CHEST PAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-786.50\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"AORTIC STENOSIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-424.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ASTHMA, MILD\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-493.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANKLE SPRAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-845.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANXIETY\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-300.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERTENSION\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-401.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"07/13/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"OSTEOPENIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-733.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPOTHYROIDISM\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-244.9\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERLIPIDEMIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-272.4\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"DIABETES INSIPIDUS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-253.5\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"10/13/2009\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    }\r\n  ],\r\n  \"ObservationList\": [\r\n    \r\n  ],\r\n  \"AllergyList\": [\r\n    {\r\n      \"Name\": \"PENICILLIN (PENICILLIN V POTASSIUM)\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"CriticalIndicator\": \"C\",\r\n      \"Classification\": \"DRUG\",\r\n      \"Description\": \"\",\r\n      \"GPICode\": \"0110000000\",\r\n      \"Severity\": \"\"\r\n    }\r\n  ],\r\n  \"DirectiveList\": [\r\n    {\r\n      \"Description\": \"NO ARTIFICIAL LIFE SUPPORT\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\"\r\n    }\r\n  ]\r\n}"
+						},
+						"description": "Get required fields for an order. Requires an order to be included in the request body."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Service Provider Accounts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"DefaultAccount\", data.AccountList.AccountName);\r",
+									"\r",
+									"var checkDefaultAcct = postman.getEnvironmentVariable(\"DefaultAccount\");\r",
+									"\r",
+									"tests[\"Check default Account - Should be QALab1\"] = checkDefaultAcct === \"QaLab1\";\r",
+									"\r",
+									"//postman.clearEnvironmentVariable(\"DefaultAccount\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/serviceprovideraccounts",
+						"method": "POST",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"OrderID\": \"ab4ac3a1af0d4d83b8e26dea059c8d640\",\r\n  \"ServiceProviderName\": \"NuLab\",\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"VisitID\": \"\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"APITEST-001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Test\",\r\n    \"FirstName\": \"API\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03/05/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"01/27/1972\",\r\n    \"InsuredGender\": \"Male\"\r\n  },\r\n  \"SecondaryInsurance\": {\r\n    \"Name\": \"Consolidated Health Care\",\r\n    \"Plan\": \"CHC (Gold Plan)\",\r\n    \"GroupID\": \"343434\",\r\n    \"MemberID\": \"7890567\",\r\n    \"Address1\": \"1239 NW Brocker Ave.\",\r\n    \"Address2\": \"Ste 390\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"\",\r\n    \"InsuredState\": \"\",\r\n    \"InsuredZipCode\": \"\",\r\n    \"InsuredCountry\": \"\",\r\n    \"InsuredPhone\": \"\",\r\n    \"InsuredWorkPhone\": \"\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\"\r\n  },\r\n  \"Guarantor\": {\r\n    \"LastName\": \"Bob\",\r\n    \"FirstName\": \"Bigboy\",\r\n    \"MiddleName\": \"\",\r\n    \"Address1\": \"\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"\",\r\n    \"State\": \"\",\r\n    \"ZipCode\": \"\",\r\n    \"Country\": \"\",\r\n    \"Phone\": \"\",\r\n    \"WorkPhone\": \"\",\r\n    \"Relationship\": \"other\",\r\n    \"DateOfBirth\": \"\"\r\n  },\r\n  \"OrderLevelAOEList\": [\r\n    {\r\n      \"CodedValue\": \"YES\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1\"\r\n    },\r\n    {\r\n      \"CodedValue\": \"41\",\r\n      \"AOEID\": \"aoe.OBX_ORDERLEVELQ1DETAILS\"\r\n    }\r\n  ],\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"AOE Demo Samples\",\r\n      \"Code\": \"1000000\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"This is a sample test to demo AOEs\",\r\n      \"TestID\": \"6835bf8d96984bac892e8a4c88b0f5f7\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n\t\t  \"CodedValue\": \"n\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_2state1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"07/13/2016\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_strict1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"last year\",\r\n          \"AOEID\": \"aoe.OBX_date_selector_loose1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"Display-only text\",\r\n          \"AOEID\": \"aoe.OBX_default1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_plain1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_label_styled1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_text_nolimit1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"1234\",\r\n          \"AOEID\": \"aoe.OBX_text_limitto41000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"012345678901234567890123456789\",\r\n         \"AOEID\": \"aoe.OBX_textbox1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"R\",\r\n          \"AOEID\": \"aoe.OBX_select1000000\"\r\n        },\r\n        {\r\n         \"CodedValue\": \"G\",\r\n         \"AOEID\": \"aoe.OBX_selectwithdefault1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"purple\",\r\n          \"AOEID\": \"aoe.OBX_selectcombo1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"C\",\r\n          \"AOEID\": \"aoe.OBX_selectmaster1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selectorslave1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"y\",\r\n          \"AOEID\": \"aoe.OBX_checkbox_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"asdf\",\r\n          \"AOEID\": \"aoe.OBX_text_vis1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_selector_viscontrol1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice1_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice2_details1000000\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_Choice3_details1000000\"\r\n        }\r\n      ],\r\n      \"SpecimenAOEList\": [\r\n        {\r\n          \"CodedValue\": \"nose\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_SITE_OBX1000000-2\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"nose notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-1\"\r\n        },\r\n        {\r\n          \"CodedValue\": \"ear notes\",\r\n          \"AOEID\": \"specimenaoe.SPECIMEN_NOTES_OBX1000000-2\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        {\"Code10\":\"S93.409\"}\r\n      ]\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n      \"Code\": \"1000001\",\r\n      \"Priority\": \"Normal\",\r\n      \"Comments\": \"comments for AOE shared demo test\",\r\n      \"TestID\": \"5f18aa0c93bd4935a748bee986195184\",\r\n      \"AOEList\": [\r\n        {\r\n          \"CodedValue\": \"\",\r\n          \"AOEID\": \"aoe.OBX_example_shared\"\r\n        }\r\n      ],\r\n      \"DiagnosesList\": [\r\n        \r\n      ]\r\n    }\r\n  ],\r\n  \"AuthProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"OwningProvider\": {\r\n    \"LastName\": \"Winston MD\",\r\n    \"FirstName\": \"Harry\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"1234567890\"\r\n  },\r\n  \"ResponsibleProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"PrimaryCareProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ReferringProvider\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"ExternalUser\": {\r\n    \"LastName\": \"\",\r\n    \"FirstName\": \"\",\r\n    \"Suffix\": \"\",\r\n    \"UserName\": \"\",\r\n    \"NPI\": \"\",\r\n    \"UPIN\": \"\",\r\n    \"ID\": \"\"\r\n  },\r\n  \"MedicationList\": [\r\n    {\r\n      \"Description\": \"LIPITOR 20 MG TABS\",\r\n      \"GenericDescription\": \"ATORVASTATIN CALCIUM\",\r\n      \"DDID\": \"47943\",\r\n      \"GPICode\": \"39400010100320\",\r\n      \"NCDCode\": \"\",\r\n      \"Instructions\": \"\",\r\n      \"OnsetDate\": \"07/03/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"1688467130006110\",\r\n      \"Comments\": \"\",\r\n      \"Indications\": \"\"\r\n    }\r\n  ],\r\n  \"ProblemList\": [\r\n    {\r\n      \"Description\": \"CHOLELITHIASIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-574.20\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"CHEST PAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-786.50\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"AORTIC STENOSIS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-424.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ASTHMA, MILD\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-493.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANKLE SPRAIN\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-845.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"ANXIETY\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-300.00\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"04/04/2013\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERTENSION\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-401.1\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"07/13/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"OSTEOPENIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-733.90\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPOTHYROIDISM\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-244.9\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"HYPERLIPIDEMIA\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-272.4\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"05/18/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    },\r\n    {\r\n      \"Description\": \"DIABETES INSIPIDUS\",\r\n      \"Type\": \"Dx of\",\r\n      \"DiagCode10\": \"\",\r\n      \"DiagCode9\": \"ICD-253.5\",\r\n      \"Comments\": \"\",\r\n      \"OnsetDate\": \"10/13/2009\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\",\r\n      \"ID\": \"\"\r\n    }\r\n  ],\r\n  \"ObservationList\": [\r\n    \r\n  ],\r\n  \"AllergyList\": [\r\n    {\r\n      \"Name\": \"PENICILLIN (PENICILLIN V POTASSIUM)\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"CriticalIndicator\": \"C\",\r\n      \"Classification\": \"DRUG\",\r\n      \"Description\": \"\",\r\n      \"GPICode\": \"0110000000\",\r\n      \"Severity\": \"\"\r\n    }\r\n  ],\r\n  \"DirectiveList\": [\r\n    {\r\n      \"Description\": \"NO ARTIFICIAL LIFE SUPPORT\",\r\n      \"OnsetDate\": \"05/04/2010\",\r\n      \"StopDate\": \"\",\r\n      \"StopReason\": \"\"\r\n    }\r\n  ]\r\n}"
+						},
+						"description": "Get the accounts for the service provider for this order. Requires an order to be included in the request body."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Medical Necessity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"DefaultLab\", data.MedicalNecessity.ABNNotifier);\r",
+									"\r",
+									"var checkDefaultLab = postman.getEnvironmentVariable(\"DefaultLab\");\r",
+									"\r",
+									"tests[\"Check default Lab - Should be NuLab\"] = checkDefaultLab === \"Nu Lab\";\r",
+									"\r",
+									"postman.clearEnvironmentVariable(\"DefaultLab\");\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{el.user}}",
+								"password": "{{el.password}}",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{el.protocol}}://{{el.host}}{{el.apphost}}/{{el.apiversion}}/order/medicalnecessity",
+						"method": "POST",
+						"header": [
+							{
+								"key": "AuthCode",
+								"value": "{{el.authcode}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{el.contenttype}}",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "{{el.accept}}",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Location\": \"Southside Clinic\",\r\n  \"LocationAbbreviation\": \"SOUTH\",\r\n  \"Patient\": {\r\n    \"PatientID\": \"72-TEST001\",\r\n    \"MRN\": \"\",\r\n    \"ExtID\": \"\",\r\n    \"AltID\": \"3400098\",\r\n    \"LastName\": \"Patient\",\r\n    \"FirstName\": \"IgnisTest\",\r\n    \"MiddleName\": \"\",\r\n    \"Suffix\": \"Jr.\",\r\n    \"DateOfBirth\": \"03\\/05\\/1974\",\r\n    \"Gender\": \"Female\",\r\n    \"SSN\": \"000-11-2222\",\r\n    \"Race\": \"H\",\r\n    \"Address1\": \"8790 SW Juniper Ln\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"Country\": \"\",\r\n    \"ZipCode\": \"97223\",\r\n    \"Phone\": \"503-555-1212\",\r\n    \"WorkPhone\": \"\",\r\n    \"CellPhone\": \"503-971-0098\",\r\n    \"Email\": \"ignistest@patient.com\",\r\n    \"MaritalStatus\": \"Married\",\r\n    \"Room\": \"\",\r\n    \"Bed\": \"\"\r\n  },\r\n  \"PrimaryInsurance\": {\r\n    \"Name\": \"Best Health Insurance Company\",\r\n    \"Plan\": \"BHI (Futura)\",\r\n    \"CarrierID\": \"BHI200\",\r\n    \"GroupID\": \"8888\",\r\n    \"MemberID\": \"909090\",\r\n    \"Address1\": \"825 NE Roosevelt\",\r\n    \"Address2\": \"\",\r\n    \"City\": \"Portland\",\r\n    \"State\": \"OR\",\r\n    \"ZipCode\": null,\r\n    \"Country\": \"USA\",\r\n    \"InsuredLastName\": \"Patient\",\r\n\t\"InsuredFirstName\": \"IgnisTest2\",\r\n    \"InsuredAddress1\": \"10100 NE Everson St.\",\r\n    \"InsuredAddress2\": \"\",\r\n    \"InsuredCity\": \"Belle Plaine\",\r\n    \"InsuredState\": \"KS\",\r\n    \"InsuredZipCode\": \"67013\",\r\n    \"InsuredCountry\": \"USA\",\r\n    \"InsuredPhone\": \"503-555-1212\",\r\n    \"InsuredWorkPhone\": \"503-972-0983\",\r\n    \"InsuredRelationship\": \"spouse\",\r\n    \"InsuredDateOfBirth\": \"\",\r\n    \"InsuredGender\": \"\",\r\n    \"WorkersComp\": \"\",\r\n    \"WorkersCompEmployer\": \"\",\r\n    \"BillingOverrideName\": \"\",\r\n    \"BillingOverrideNumber\": \"\",\r\n    \"BillingOverrideAddress\": \"\",\r\n    \"BillingOverrideSubscriberLastName\": \"\",\r\n    \"BillingOverrideSubscriberFirstName\": \"\"\r\n  },\r\n  \"TestList\": [\r\n    {\r\n      \"Description\": \"CBC\"\r\n    },\r\n    {\r\n      \"Description\": \"AOE Demo Samples Shared\",\r\n    }\r\n  ]\r\n}\r\n"
+						},
+						"description": "Run Medical Necessity check on order. Requires an order to be included in the request body."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
