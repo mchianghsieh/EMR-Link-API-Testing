@@ -1188,6 +1188,19 @@
 				},
 				{
 					"name": "Get Required Fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "basic",
@@ -1218,7 +1231,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic QVBJVGVzdFVzZXI6OWExOGYyYTMtZmVhYS1jZTU4LTg0ZjItNDg0N2Y2NmRkOTA2",
+								"value": "Basic QVBJVGVzdFVzZXI6ZWY1MmIxYTQtMDkyNS0zMmNiLTAzZWQtYTQ3ZjU1ZWMwYWE0",
 								"description": ""
 							}
 						],
@@ -1238,14 +1251,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"var data = JSON.parse(responseBody);\r",
-									"postman.setEnvironmentVariable(\"DefaultAccount\", data.AccountList.AccountName);\r",
-									"\r",
-									"var checkDefaultAcct = postman.getEnvironmentVariable(\"DefaultAccount\");\r",
-									"\r",
-									"tests[\"Check default Account - Should be QALab1\"] = checkDefaultAcct === \"QaLab1\";\r",
-									"\r",
-									"//postman.clearEnvironmentVariable(\"DefaultAccount\");"
+									"tests[\"Check Return Patient Name Match\"] = responseBody.has(\"QaLab1\");"
 								]
 							}
 						}
